@@ -43,7 +43,6 @@
         "text",
         "button"
       ],
-      "disabled": true,
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
@@ -78,7 +77,6 @@
         "heading",
         "text"
       ],
-      "disabled": true,
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
@@ -90,7 +88,6 @@
     },
     "featured_collection": {
       "type": "featured-collection",
-      "disabled": true,
       "settings": {
         "collection": "all",
         "products_to_show": 8,
@@ -145,7 +142,6 @@
         "product",
         "collection-1"
       ],
-      "disabled": true,
       "settings": {
         "heading": "Multimedia collage",
         "heading_size": "h2",
