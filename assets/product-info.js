@@ -1,3 +1,4 @@
+
 if (!customElements.get('product-info')) {
   customElements.define(
     'product-info',
