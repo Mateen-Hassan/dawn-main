@@ -296,3 +296,10 @@ if (!customElements.get('cart-note')) {
   );
 }
 console.log('you can go ');
+function checkForGift() {
+  fetch("/cart.js")
+  .then(response=>response.JSON())
+  .then(cart=>{
+    console.log(cart.total_price)
+  })
+}
