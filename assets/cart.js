@@ -298,7 +298,7 @@ if (!customElements.get('cart-note')) {
 
 function checkForGift() {
   fetch("/cart.js")
-  .then(response=>response.JSON())
+  .then(response=>response.json())
   .then(cart=>{
     console.log(cart.total_price)
   })
