@@ -295,7 +295,7 @@ if (!customElements.get('cart-note')) {
     }
   );
 }
-console.log('you can go ');
+
 function checkForGift() {
   fetch("/cart.js")
   .then(response=>response.JSON())
@@ -303,3 +303,4 @@ function checkForGift() {
     console.log(cart.total_price)
   })
 }
+checkForGift()
