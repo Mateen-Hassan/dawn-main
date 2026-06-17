@@ -304,8 +304,9 @@ function checkForGift() {
     let giftItem=cart.items.find(item=> item.id ===46955469963435)
     if(giftItem){
 console.log('Hurray you have the gift');
-
-    }
+    }else(
+      console.log("shop more to get a free gift")
+    )
   })
 }
 checkForGift()
