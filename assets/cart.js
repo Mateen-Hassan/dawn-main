@@ -309,4 +309,5 @@ console.log('Hurray you have the gift');
     )
   })
 }
-checkForGift()
+document.addEventListener('DOMContentLoaded',checkForGift())
+
