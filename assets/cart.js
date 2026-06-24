@@ -425,3 +425,19 @@ if (!customElements.get('cart-note')) {
     }
   );
 }
+
+function checkForGift() {
+  fetch("/cart.js")
+  .then(response=>response.json())
+  .then(cart=>{
+    let cart_total= cart.total_price;
+    let giftItem=cart.items.find(item=> item.id ===46955469963435)
+    if(giftItem){
+console.log('Hurray you have the gift');
+    }else(
+      console.log("shop more to get a free gift")
+    )
+  })
+}
+document.addEventListener('DOMContentLoaded',checkForGift())
+
