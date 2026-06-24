@@ -24,7 +24,6 @@
       <legend>{{ option.name }}</legend>
 
       {%- for value in option.values -%}
-        {%- assign input_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0 -%}
 
         <input
           type="radio"
@@ -33,7 +32,6 @@
           value="{{ value | escape }}"
           {% if value == option.selected_value %}checked{% endif %}
         >
-
         <label for="{{ input_id }}">{{ value }}</label>
       {%- endfor -%}
     </fieldset>
