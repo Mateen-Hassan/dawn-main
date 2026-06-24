@@ -1,7 +1,11 @@
 <div class="container">
-    <img src="{{product.image | image_url: width: 165 }}">
+    <img src="{{ product.featured_image | image_url: width: 600 }}" 
+     alt="{{ product.featured_image.alt | escape }}" 
+     width="600" 
+     height="auto">
     {{product.title }}
     {{ product.price | money_with_currency }}
+
 
 </div>
 
