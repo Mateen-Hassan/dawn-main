@@ -34,17 +34,7 @@
             </label>
           {%- endfor -%}
     {%- endfor -%}
-    <select name="id" id="ProductSelect-{{ section.id }}" class="master-select" style="display:none;">
-      {% for variant in product.variants %}
-        <option 
-          value="{{ variant.id }}"
-          {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-          {% unless variant.available %}disabled="disabled"{% endunless %}
-          data-options='{{ variant.options | json }}'
-        >
-          {{ variant.title }}
-        </option>
-      {% endfor %}
+    
     </select>
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
