@@ -20,27 +20,12 @@
     {{ product.price | money_with_currency }}
   {% form 'product', product %}
   
-  <!-- 1. The Custom Required Field -->
-  <div class="line-item-property__field" style="margin-bottom: 15px;">
-    <label for="custom-engraving" style="display: block; margin-bottom: 5px;">
-      Custom Engraving (Required):
-    </label>
-    <input 
-      type="text" 
-      id="custom-engraving" 
-      name="properties[Engraving]" 
-      required
-      placeholder="Enter text here..."
-      style="width: 100%; max-width: 400px; padding: 10px;"
-    >
-  </div>
-
   <!-- 2. Standard Product Dropdowns (Variants) -->
   {% unless product.has_only_default_variant %}
     {% for option in product.options_with_values %}
       <div class="product-form__input">
         <label for="Option-{{ forloop.index0 }}">{{ option.name }}</label>
-        <select id="Option-{{ forloop.index0 }}" name="id">
+        <input type="radio" id="Option-{{ forloop.index0 }}" name="id">
           {% for value in option.values %}
             <option value="{{ value.variant.id }}">{{ value }}</option>
           {% endfor %}
@@ -49,15 +34,14 @@
     {% endfor %}
   {% endunless %}
 
-  <!-- 3. Hidden Master Variant ID Input (Required by Shopify) -->
+  
   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
-  <!-- 4. Submit Button -->
-  <div class="product-form__buttons" style="margin-top: 15px;">
+
     <button type="submit" name="add" class="product-form__submit button">
       Add to cart
     </button>
-  </div>
+
 
 {% endform %}
 
