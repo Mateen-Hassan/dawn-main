@@ -25,13 +25,11 @@
               value="{{ value | escape }}"
               {% if option.selected_value == value %}checked{% endif %}
             >
-            <label >
+            <label>
               {{ value }}
             </label>
           {%- endfor -%}
     {%- endfor -%}
-    
-    </select>
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
