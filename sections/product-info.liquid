@@ -20,42 +20,55 @@
     {{ product.price | money_with_currency }}
   {% form 'product', product %}
   
+  <!-- 1. The Custom Required Field -->
+  <div class="line-item-property__field" style="margin-bottom: 15px;">
+    <label for="custom-engraving" style="display: block; margin-bottom: 5px;">
+      Custom Engraving (Required):
+    </label>
+    <input 
+      type="text" 
+      id="custom-engraving" 
+      name="properties[Engraving]" 
+      required
+      placeholder="Enter text here..."
+      style="width: 100%; max-width: 400px; padding: 10px;"
+    >
+  </div>
 
-      {% comment %} {%- unless product.has_only_default_variant -%}
-        {%- for option in product.options_with_values -%}
-          <fieldset>
-            <p>{{ option.name }}</p>
-            {%- for value in option.values -%}
-              <input
-                type="radio"
-                id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
-                name="{{ option.name }}"
-                value="{{value}}"
-                {% if option.selected_value == value %}checked{% endif %}
-              >
-              <label>{{ value }}</label>
-            {%- endfor -%}
-          </fieldset>
-        {%- endfor -%}
-      {%- endunless -%} {% endcomment %}
-      {% comment %} <input
-        type="hidden"
-        id="id"
-        name="variant-name"
-        value="{{ product.selected_or_first_available_variant.id }}"
-      > {% endcomment %}
-      <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" name="quantity" value="1" min="1">
-      <button type="submit" name="add" class="atcBtn" >Add to Cart</button>
-      {% endform %}
+  <!-- 2. Standard Product Dropdowns (Variants) -->
+  {% unless product.has_only_default_variant %}
+    {% for option in product.options_with_values %}
+      <div class="product-form__input">
+        <label for="Option-{{ forloop.index0 }}">{{ option.name }}</label>
+        <select id="Option-{{ forloop.index0 }}" name="id">
+          {% for value in option.values %}
+            <option value="{{ value.variant.id }}">{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endfor %}
+  {% endunless %}
+
+  <!-- 3. Hidden Master Variant ID Input (Required by Shopify) -->
+  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+  <!-- 4. Submit Button -->
+  <div class="product-form__buttons" style="margin-top: 15px;">
+    <button type="submit" name="add" class="product-form__submit button">
+      Add to cart
+    </button>
+  </div>
+
+{% endform %}
+
   </div>
 </div>
 
 <script>
-  const atcButton=document.querySelector('.atcBtn')
+  {% comment %} const atcButton=document.querySelector('.atcBtn')
       atcButton.addEventListener('click', (event) => {
     event.preventDefault();
-  }); 
+  });  {% endcomment %}
 </script>
 {% schema %}
 {
