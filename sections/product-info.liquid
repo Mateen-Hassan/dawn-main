@@ -27,13 +27,14 @@
             {% for value in option.values %}
               <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
                 {{ value }}
+                 <input type="hidden" name="id" value="{{value }}" />
               </option>
             {% endfor %}
           </select>
         {% endfor %}
       </div>
 
-  {% comment %} <input type="hidden" name="id" value="{{ product.variants.first.id }}" /> {% endcomment %}
+ 
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
   <button type="submit" name="add" class="atcBtn">Add to Cart</button>
