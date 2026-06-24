@@ -33,13 +33,20 @@
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
-  <button type="submit" name="add">Add to Cart</button>
+  <button type="submit" name="add" class="atcBtn">Add to Cart</button>
 </form>
 
      </div>
     
 </div>
 
+<script>
+const atcButton=document.querySelector('.atcBtn')
+    atcButton.addEventListener('click', (event) => {
+  event.preventDefault(); // Default behavior is now blocked
+});
+
+</script>
 {% schema %}
 {
   "name": "Custom Banner",
