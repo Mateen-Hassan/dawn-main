@@ -25,7 +25,7 @@
     {% for option in product.options_with_values %}
       <div class="product-form__input">
         <label for="Option-{{ forloop.index0 }}">{{ option.name }}</label>
-        <input type="radio" id="Option-{{ forloop.index0 }}" name="id">
+        <select id="Option-{{ forloop.index0 }}" name="id">
           {% for value in option.values %}
             <option value="{{ value.variant.id }}">{{ value }}</option>
           {% endfor %}
@@ -49,10 +49,10 @@
 </div>
 
 <script>
-  {% comment %} const atcButton=document.querySelector('.atcBtn')
+   const atcButton=document.querySelector('.atcBtn')
       atcButton.addEventListener('click', (event) => {
     event.preventDefault();
-  });  {% endcomment %}
+  });  
 </script>
 {% schema %}
 {
