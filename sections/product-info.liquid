@@ -21,7 +21,7 @@
   {% form 'product', product %}
   
 
-      {%- unless product.has_only_default_variant -%}
+      {% comment %} {%- unless product.has_only_default_variant -%}
         {%- for option in product.options_with_values -%}
           <fieldset>
             <p>{{ option.name }}</p>
@@ -30,14 +30,14 @@
                 type="radio"
                 id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
                 name="{{ option.name }}"
-                value="{{ value}}"
+                value="{{value}}"
                 {% if option.selected_value == value %}checked{% endif %}
               >
               <label>{{ value }}</label>
             {%- endfor -%}
           </fieldset>
         {%- endfor -%}
-      {%- endunless -%}
+      {%- endunless -%} {% endcomment %}
       <input
         type="hidden"
         id="id"
