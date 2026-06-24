@@ -17,19 +17,24 @@
         {{product.title }}
     {{ product.price | money_with_currency }}
     <form method="post" action="/cart/add">
-    {%- for option in product-%}
-          {%- for value in option.values -%}
-            <input 
-              type="radio" 
-              name="{{ option.name }}" 
-              value="{{ value | escape }}"
-              {% if option.selected_value == value %}checked{% endif %}
-            >
-            <label>
-              {{ value }}
-            </label>
-          {%- endfor -%}
-    {%- endfor -%}
+    {%- unless product.has_only_default_variant -%}
+  <div class="variant-selector">
+    {% for option in product.options_with_values %}
+      <label for="Option-{{ forloop.index0 }}">
+        {{ option.name }}
+      </label>
+      
+      <select id="Option-{{ forloop.index0 }}" name="options[{{ option.name | escape }}]">
+        {% for value in option.values %}
+          <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+            {{ value }}
+          </option>
+        {% endfor %}
+      </select>
+    {% endfor %}
+  </div>
+{%- endunless -%}
+
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
