@@ -19,44 +19,24 @@
     {{ product.title }}
     {{ product.price | money_with_currency }}
   {% form 'product', product %}
-  <!-- form content -->
+  
 
-     {% comment %}
-  Custom variant selector loop for multiple product options.
-  This outputs radio buttons grouped by each specific option name.
-{% endcomment %}
-
-{% unless product.has_only_default_variant %}
-  <div class="custom-variant-selectors" data-url="{{ product.url }}">
-    {% for option in product.options_with_values %}
-      <fieldset class="variant-input-wrapper" data-option-index="{{ forloop.index0 }}">
-        <legend class="variant-label">{{ option.name }}: <span class="selected-value">{{ option.selected_value }}</span></legend>
-        
-        <div class="variant-options-list">
-          {% for value in option.values %}
-            <input 
-              type="radio" 
-              id="{{ section.id }}-{{ option.name | handle }}-{{ value | handle }}" 
-              name="{{ option.name }}" 
-              value="{{ value | escape }}"
-              {% if option.selected_value == value %}checked{% endif %}
-              class="variant-radio-input"
-            >
-            <label for="{{ section.id }}-{{ option.name | handle }}-{{ value | handle }}" class="variant-radio-label">
-              {{ value }}
-            </label>
-          {% endfor %}
-        </div>
-      </fieldset>
-    {% endfor %}
-
-    {% comment %} Hidden master select input containing the true variant IDs for checkout {% endcomment %}
-    <script type="application/json" id="ProductJson-{{ section.id }}">
-      {{ product.variants | json }}
-    </script>
-  </div>
-{% endunless %}
-
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <fieldset>
+            <p>{{ option.name }}</p>
+            {%- for value in option.values -%}
+              <input
+                type="radio"
+                id="{{ option.name }}"
+                name="{{ option.name }}"
+                value="{{ product.selected_or_first_available_variant.id }}"
+              >
+              <label>{{ value }}</label>
+            {%- endfor -%}
+          </fieldset>
+        {%- endfor -%}
+      {%- endunless -%}
       <input
         type="hidden"
         id="id"
@@ -66,8 +46,7 @@
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" name="quantity" value="1" min="1">
       <button type="submit" name="add" class="atcBtn">Add to Cart</button>
-
-  {% endform %}
+      {% endform %}
   </div>
 </div>
 
