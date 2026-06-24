@@ -20,7 +20,7 @@
     
    <div class="variant-selector">
         {% for option in product.options_with_values %}
-          <label for="Option-{{ section.id }}-{{ forloop.index0 }}">
+          <label>
             {{ option.name }}
           </label>
           <select id="Option-{{ section.id }}-{{ forloop.index0 }}" class="single-option-selector" data-index="option{{ forloop.index }}">
