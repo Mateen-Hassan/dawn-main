@@ -1,11 +1,14 @@
 {% style %}
-    .container{
-      display: flex;
-    }
-  .product-data{
-      display: flex;
-      flex-direction: column;
-  }
+.container {
+  display: flex;
+  gap: 2rem;
+}
+
+.product-data {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 {% endstyle %}
 
 <div class="container">
@@ -13,65 +16,69 @@
     src="{{ product.featured_image | image_url: width: 600 }}"
     alt="{{ product.featured_image.alt | escape }}"
     width="600"
-    height="auto"
+    style="height: auto;"
   >
+
   <div class="product-data">
-    {{ product.title }}
-    {{ product.price | money_with_currency }}
-  {% form 'product', product %}
-  {% unless product.has_only_default_variant %}
-    {% for option in product.options_with_values %}
-      <div class="product-form__input">
-        <label for="Option-{{ forloop.index0 }}">{{ option.name }}</label>
-        <select id="Option-{{ forloop.index0 }}" name="id">
-          {% for value in option.values %}
-            <option value="{{ value.variant.id }}">{{ value }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    {% endfor %}
-  {% endunless %}
+    <h1>{{ product.title }}</h1>
 
-  
-  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <p>{{ product.price | money_with_currency }}</p>
 
+    {% form 'product', product %}
+      
+      {% unless product.has_only_default_variant %}
+        <div class="product-form__input">
+          <label for="VariantSelect">Choose Variant</label>
 
-    <button type="submit" name="add" class="atcBtn">
-      Add to cart
-    </button>
+          <select id="VariantSelect" name="id">
+            {% for variant in product.variants %}
+              <option
+                value="{{ variant.id }}"
+                {% if variant == product.selected_or_first_available_variant %}
+                  selected
+                {% endif %}
+                {% unless variant.available %}
+                  disabled
+                {% endunless %}
+              >
+                {{ variant.title }}
+                {% unless variant.available %}
+                  - Sold Out
+                {% endunless %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% else %}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+        >
+      {% endunless %}
 
+      <button
+        type="submit"
+        name="add"
+        class="atcBtn"
+        {% unless product.selected_or_first_available_variant.available %}
+          disabled
+        {% endunless %}
+      >
+        Add to Cart
+      </button>
 
-{% endform %}
-
+    {% endform %}
   </div>
 </div>
 
-<script>
-   {% comment %} const atcButton=document.querySelector('.atcBtn')
-      atcButton.addEventListener('click', (event) => {
-    event.preventDefault();
-  });   {% endcomment %}
-</script>
 {% schema %}
 {
-  "name": "Custom Banner",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Section Heading",
-      "default": "Welcome to our store"
-    },
-    {
-      "type": "image_picker",
-      "id": "banner_image",
-      "label": "Banner Image"
-    }
-  ],
+  "name": "Product Data",
+  "settings": [],
   "presets": [
     {
-      "name": "Product Data",
-      "settings": {}
+      "name": "Product Data"
     }
   ]
 }
