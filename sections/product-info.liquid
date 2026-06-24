@@ -17,7 +17,7 @@
         {{product.title }}
     {{ product.price | money_with_currency }}
     <form method="post" action="/cart/add">
-    {%- unless product.has_only_default_variant -%}
+    
   <div class="variant-selector">
     {% for option in product.options_with_values %}
       <label >
@@ -33,7 +33,6 @@
       </select>
     {% endfor %}
   </div>
-{%- endunless -%}
 
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
