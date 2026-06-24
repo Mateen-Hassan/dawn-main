@@ -33,11 +33,11 @@ function checkForGift(){
   .then(cart =>{
     let Gift_id= 46955469963435;
     let cartTotal= cart.total_price;
-    let cartMin= 120000;
-    let giftItem= cart.items.find(item=> item.id=== Gift_id);
+    let cartMin = 120000;
+    let giftItem = cart.items.find(item=> item.id=== Gift_id);
     
 console.log(cartTotal)
-    if(cartMin <=cartTotal && !giftItem){
+    if(cartMin <= cartTotal && !giftItem){
       addGiftCart();
       
     }else if(cartMin>cartTotal){
@@ -426,18 +426,18 @@ if (!customElements.get('cart-note')) {
   );
 }
 
-function checkForGift() {
-  fetch("/cart.js")
-  .then(response=>response.json())
-  .then(cart=>{
-    let cart_total= cart.total_price;
-    let giftItem=cart.items.find(item=> item.id ===46955469963435)
-    if(giftItem){
-console.log('Hurray you have the gift');
-    }else(
-      console.log("shop more to get a free gift")
-    )
-  })
-}
-document.addEventListener('DOMContentLoaded',checkForGift())
+// function checkForGift() {
+//   fetch("/cart.js")
+//   .then(response=>response.json())
+//   .then(cart=>{
+//     let cart_total= cart.total_price;
+//     let giftItem=cart.items.find(item=> item.id ===46955469963435)
+//     if(giftItem){
+// console.log('Hurray you have the gift');
+//     }else(
+//       console.log("shop more to get a free gift")
+//     )
+//   })
+// }
+// document.addEventListener('DOMContentLoaded',checkForGift())
 
