@@ -19,20 +19,36 @@
     <form method="post" action="/cart/add">
     
    <div class="variant-selector">
-        {% for option in product.options_with_values %}
-          <label>
-            {{ option.name }}
-          </label>
-          <select id="Option-{{ section.id }}-{{ forloop.index0 }}" class="single-option-selector" data-index="option{{ forloop.index }}">
-            {% for value in option.values %}
-              <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
-                {{ value }}
-                 <input type="hidden" name="id" value="{{value }}" />
-              </option>
-            {% endfor %}
-          </select>
+  {% for option in product.options_with_values %}
+    
+      <label for="Option-{{ section.id }}-{{ forloop.index0 }}">
+        {{ option.name }}
+      </label>
+      
+      <select 
+        id="Option-{{ section.id }}-{{ forloop.index0 }}" 
+        class="single-option-selector" 
+        data-index="option{{ forloop.index }}"
+        name="options[{{ option.name | escape }}]"
+      >
+        {% for value in option.values %}
+          <option 
+            value="{{ value | escape }}" 
+            {% if option.selected_value == value %}selected="selected"{% endif %}
+          >
+            {{ value }}
+          </option>
         {% endfor %}
-      </div>
+      </select>
+  {% endfor %}
+  <input 
+    type="hidden" 
+    name="id" 
+    id="ProductSelect-{{ section.id }}" 
+    value="{{ product.selected_or_first_available_variant.id }}" 
+  />
+</div>
+
 
  
   <label for="quantity">Quantity:</label>
