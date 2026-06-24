@@ -21,6 +21,7 @@
       {% for variant in product.variants %}
         <option 
           value="{{ variant.id }}"
+          data-options='{{ variant.options | json }}'
         >
           {{ variant.title }}
         </option>
