@@ -31,6 +31,7 @@
                 id="{{ option.name }}"
                 name="{{ option.name }}"
                 value="{{ product.selected_or_first_available_variant.id }}"
+                {% if product.selected_or_first_available_variant.id %} selected {% endif %}
               >
               <label>{{ value }}</label>
             {%- endfor -%}
