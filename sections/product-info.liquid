@@ -37,7 +37,16 @@
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
-  <button type="submit" name="add" class="atcBtn">Add to Cart</button>
+  <button id="ProductSubmitButton-{{ section_id }}"
+            type="submit"
+            name="add"
+            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            {% if product.selected_or_first_available_variant.available == false
+              or quantity_rule_soldout
+              or product.selected_or_first_available_variant == null
+            %}
+              disabled
+            {% endif %}>Add to Cart</button>
 </form>
 
      </div>
