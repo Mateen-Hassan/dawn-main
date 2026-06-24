@@ -19,29 +19,26 @@
     <form method="post" action="/cart/add">
     
    {%- unless product.has_only_default_variant -%}
-  <div class="variant-selector">
-    <label for="ProductSelect-option">Options</label>
-    <select name="id" id="ProductSelect-option" class="product-form__variants">
-      {%- for variant in product.variants -%}
-        {%- if variant.available -%}
-          <option value="{{ variant.id }}"
-            {%- if variant == product.selected_or_first_available_variant %} selected="selected"{% endif -%}
-          >
-            {{ variant.title }} - {{ variant.price | money }}
-          </option>
-        {%- else -%}
-          <option disabled="disabled">
-            {{ variant.title }} - Sold out
-          </option>
-        {%- endif -%}
+  {%- for option in product.options_with_values -%}
+    <fieldset class="product-form__input">
+      <legend>{{ option.name }}</legend>
+
+      {%- for value in option.values -%}
+        {%- assign input_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0 -%}
+
+        <input
+          type="radio"
+          id="{{ input_id }}"
+          name="{{ option.name }}"
+          value="{{ value | escape }}"
+          {% if value == option.selected_value %}checked{% endif %}
+        >
+
+        <label for="{{ input_id }}">{{ value }}</label>
       {%- endfor -%}
-    </select>
-  </div>
-{%- endunless -%}
-
-
-
- 
+    </fieldset>
+  {%- endfor -%}
+{%- endunless -%} 
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
   <button type="submit" name="add" class="atcBtn">Add to Cart</button>
