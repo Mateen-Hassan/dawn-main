@@ -2,6 +2,9 @@
   .container{
     display: flex;
   }
+.product-data{
+    display: flex;
+}
 {% endstyle %}
 
 <div class="container">
@@ -9,7 +12,7 @@
      alt="{{ product.featured_image.alt | escape }}" 
      width="600" 
      height="auto">
-     <div>
+     <div class="product-data">
         {{product.title }}
     {{ product.price | money_with_currency }}
      </div>
