@@ -38,24 +38,24 @@
           </fieldset>
         {%- endfor -%}
       {%- endunless -%} {% endcomment %}
-      <input
+      {% comment %} <input
         type="hidden"
         id="id"
         name="variant-name"
         value="{{ product.selected_or_first_available_variant.id }}"
-      >
+      > {% endcomment %}
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" name="quantity" value="1" min="1">
-      <button type="submit" name="add" class="atcBtn">Add to Cart</button>
+      <button type="submit" name="add" class="atcBtn" >Add to Cart</button>
       {% endform %}
   </div>
 </div>
 
 <script>
-  {% comment %} const atcButton=document.querySelector('.atcBtn')
+  const atcButton=document.querySelector('.atcBtn')
       atcButton.addEventListener('click', (event) => {
     event.preventDefault();
-  }); {% endcomment %}
+  }); 
 </script>
 {% schema %}
 {
