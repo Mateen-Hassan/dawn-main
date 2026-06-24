@@ -24,19 +24,21 @@
       <legend>{{ option.name }}</legend>
 
       {%- for value in option.values -%}
+        {%- assign unique_id = 'option-' | append: option.position | append: '-' | append: forloop.index -%}
 
         <input
           type="radio"
-          id="{{ input_id }}"
+          id="{{ unique_id }}"
           name="{{ option.name }}"
           value="{{ value | escape }}"
-          {% if value == option.selected_value %}checked{% endif %}
+          required
         >
-        <label for="{{ input_id }}">{{ value }}</label>
+        <label for="{{ unique_id }}">{{ value }}</label>
       {%- endfor -%}
     </fieldset>
   {%- endfor -%}
 {%- endunless -%} 
+
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
   <button type="submit" name="add" class="atcBtn">Add to Cart</button>
