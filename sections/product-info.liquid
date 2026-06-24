@@ -1,0 +1,33 @@
+<div class="container">
+    <img src="{{product.image | image_url: width: 165 }}">
+    {{product.title }}
+    {{ product.price | money_with_currency }}
+
+</div>
+
+{% schema %}
+{
+  "name": "Custom Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Welcome to our store"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Data",
+      "settings": {
+        "heading": "Welcome to our store"
+      }
+    }
+  ]
+}
+{% endschema %}
