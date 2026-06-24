@@ -17,10 +17,9 @@
         {{product.title }}
     {{ product.price | money_with_currency }}
     <form method="post" action="/cart/add">
-    
    {%- unless product.has_only_default_variant -%}
   {%- for option in product.options_with_values -%}
-    <fieldset class="product-form__input">
+    <option class="product-form__input">
       <p>{{ option.name }}</p>
       {%- for value in option.values -%}
         <input
@@ -31,7 +30,7 @@
         >
         <label>{{ value }}</label>
       {%- endfor -%}
-    </fieldset>
+    </option>
   {%- endfor -%}
 {%- endunless -%} 
 
