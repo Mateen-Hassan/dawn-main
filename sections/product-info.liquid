@@ -28,9 +28,9 @@
             {%- for value in option.values -%}
               <input
                 type="radio"
-                id="{{ option.name }}"
+                id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
                 name="{{ option.name }}"
-                value="{{ product.selected_or_first_available_variant.id }}"
+                value="{{ value}}"
                 {% if option.selected_value == value %}checked{% endif %}
               >
               <label>{{ value }}</label>
@@ -41,8 +41,8 @@
       <input
         type="hidden"
         id="id"
-        name="{{ option.name }}-{{section.id }}"
-        value="{{option.value }}"
+        name="{{ option.name }}"
+        value="{{ product.selected_or_first_available_variant.id }}"
       >
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" name="quantity" value="1" min="1">
