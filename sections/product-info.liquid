@@ -29,8 +29,9 @@
           value="{{ value | escape }}"
         >
         <label>{{ value }}</label>
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
       {%- endfor -%}
-      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      
     </fieldset>
   {%- endfor -%}
 {%- endunless -%} 
