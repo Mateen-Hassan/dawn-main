@@ -114,7 +114,6 @@
         "collapsible-row-3",
         "share"
       ],
-      "disabled": true,
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "",
@@ -133,10 +132,9 @@
     },
     "product_info_aeB8Gh": {
       "type": "product-info",
+      "disabled": true,
       "name": "Product Data",
-      "settings": {
-        "heading": "Welcome to our store"
-      }
+      "settings": {}
     },
     "image-with-text": {
       "type": "image-with-text",
