@@ -20,9 +20,8 @@
  
     
     {%- for option in product.options_with_values -%}
-      <fieldset class="variant-wrapper" data-option-index="{{ forloop.index0 }}">
-        <legend class="variant-label">{{ option.name }}: <span class="selected-value">{{ option.selected_value }}</span></legend>
-        
+      
+       
      
           {%- for value in option.values -%}
             <input 
@@ -37,7 +36,6 @@
               {{ value }}
             </label>
           {%- endfor -%}
-      </fieldset>
     {%- endfor -%}
     <select name="id" id="ProductSelect-{{ section.id }}" class="master-select" style="display:none;">
       {% for variant in product.variants %}
