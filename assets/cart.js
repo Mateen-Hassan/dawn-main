@@ -1,3 +1,133 @@
+// window.addEventListener("cart_changed", (event) => {
+//   console.log("Cart was updated:", event.detail);
+//   // Add your custom trigger logic here
+//   });
+
+
+function rerenderCart(){
+ 
+  fetch('/?section_id=cart-drawer')
+  .then(response=> response.text())  // Get HTML as text
+  .then(html=>{
+      const cartDrawer = document.querySelector('cart-drawer .drawer__inner');
+      if (cartDrawer) {
+          const fakeDiv = document.createElement('div');
+          fakeDiv.innerHTML = html;
+          
+          const newDrawerInner = fakeDiv.querySelector('.drawer__inner');
+          if (newDrawerInner) {
+              cartDrawer.innerHTML = newDrawerInner.innerHTML;
+          }
+      }
+      console.log('Cart drawer updated');
+  })
+  .catch(error=>{
+      console.log('Error rendering cart:', error);
+  })
+}
+
+
+function checkForGift(){
+  fetch("/cart.js")
+  .then(response=> response.json())
+  .then(cart =>{
+    let Gift_id= 46955469963435;
+    let cartTotal= cart.total_price;
+    let cartMin= 120000;
+    let giftItem= cart.items.find(item=> item.id=== Gift_id);
+    
+console.log(cartTotal)
+    if(cartMin <=cartTotal && !giftItem){
+      addGiftCart();
+      
+    }else if(cartMin>cartTotal){
+     removeGiftCart(giftItem.key)
+    
+    }
+  })
+  .catch((error)=>{
+    console.error('error adding gift cart' ,error)
+    
+  })
+}
+document.addEventListener("DOMContentLoaded", checkForGift);
+
+function addGiftCart(){
+  let Gift_id= 46955469963435;
+  const formData={
+    items:[{
+      id:46955469963435,
+      quantity: 1
+    }]
+  };
+  fetch("/cart/add.js",{
+    method: 'POST',
+    headers:{
+      'Content-Type':'application/json',
+    },
+    body:JSON.stringify(formData)
+  })
+.then(response => response.json())
+  .then(cart =>{
+    console.log('Gift card added Succesfully', cart);
+    rerenderCart()
+  })
+  .catch((error)=>{
+  console.error('Error adding gift:', error)});
+}
+
+//
+function removeGiftCart(item_key){
+  const formData={
+    updates: {
+      [item_key]: 0
+    }
+  };
+  fetch("/cart/update.js",{
+    method: 'POST',
+    headers:{
+      'Content-Type':'application/json',
+    },
+    body:JSON.stringify(formData)
+  })
+  .then(response => response.json()) 
+  .then(cart =>{
+    console.log('Gift card removed Succesfully', cart);
+    rerenderCart()
+  })
+  .catch((error)=>{
+  console.error('Error removing gift:', error)});
+}
+///
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.subscribe && typeof PUB_SUB_EVENTS !== 'undefined') {
+    
+    // Listen for any cart modifications (updates and removals)
+    window.subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+      console.log('Cart updated or item removed. Current cart data:', event.cart);
+      
+      // Call your custom function here
+      checkForGift()
+    });
+    
+  }
+});
+
+function myCustomCartFunction(cartData) {
+  // Your logic here (e.g., update a progress bar, check cart totals, etc.)
+  if (cartData.item_count === 0) {
+     console.log('The cart is completely empty!');
+  }
+}
+
+
+
+
+
+
+////
 class CartRemoveButton extends HTMLElement {
   constructor() {
     super();

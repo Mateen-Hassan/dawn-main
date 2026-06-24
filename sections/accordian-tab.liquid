@@ -1,6 +1,22 @@
-<script href="{{ 'accordian-tab.js' | asset_url }}" defer></script>
-<accordian-tab></accordian-tab>
+<style>
 
+  .acc-content {
+    display: none;
+  }
+  mateen-tab[open] .acc-content {
+    display: block;
+  }
+</style>
+
+<mateen-tab>
+  <div data-header>
+    <h2>Accordion Tab</h2>
+  </div>
+  <div data-content class="acc-content">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet voluptatum eligendi sint cum. Alias libero architecto aperiam, quo expedita distinctio animi impedit consectetur aut nobis consequuntur magni accusamus officiis deleniti!</p>
+  </div>
+</mateen-tab>
+<script src="{{ 'accordian-tab.js' | asset_url }}" defer></script>
 {% schema %}
   {
     "name": "Accordian Tab",

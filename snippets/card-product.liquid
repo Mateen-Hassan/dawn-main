@@ -57,6 +57,7 @@
         class="card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if card_product.featured_media or settings.card_style == 'standard' %} ratio{% endif %}"
         style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
       >
+        
         {%- if card_product.featured_media -%}
           <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
             <div class="media media--transparent media--hover-effect">
@@ -166,7 +167,7 @@
               <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
             {%- endif -%}
 
-            <span class="caption-large light">{{ block.settings.description | escape }} to kesy hain ap log</span>
+            <span class="caption-large light">{{ block.settings.description | escape }}</span>
 
             {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
               {% liquid
@@ -226,6 +227,7 @@
                   <span class="caption">{{ 'products.product.volume_pricing.note' | t }}</span>
                 </div>
               {% endif %}
+              
               {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                 <div
                   class="global-settings-popup quantity-popover__info"
@@ -381,9 +383,12 @@
                       <span class="icon-wrap">
                         {{- 'icon-plus.svg' | inline_asset_content -}}
                       </span>
+                     
                     {%- endif -%}
+
                     {%- render 'loading-spinner' -%}
                   </button>
+                  
                 {%- endform -%}
               </product-form>
             {%- endif -%}
@@ -623,3 +628,5 @@
     </div>
   </div>
 {%- endif -%}
+
+
