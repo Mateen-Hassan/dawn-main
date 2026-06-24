@@ -20,7 +20,7 @@
     {%- unless product.has_only_default_variant -%}
   <div class="variant-selector">
     {% for option in product.options_with_values %}
-      <label for="Option-{{ forloop.index0 }}">
+      <label >
         {{ option.name }}
       </label>
       
