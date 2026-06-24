@@ -24,7 +24,7 @@
       {%- for value in option.values -%}
         <input
           type="radio"
-          id="{{ unique_id }}"
+          id="{{ option.name | handleize }}-{{ value | handleize }}"
           name="{{ option.name }}"
           value="{{ value | escape }}"
         >
