@@ -21,11 +21,8 @@
    {%- unless product.has_only_default_variant -%}
   {%- for option in product.options_with_values -%}
     <fieldset class="product-form__input">
-      <legend>{{ option.name }}</legend>
-
+      <p>{{ option.name }}</p>
       {%- for value in option.values -%}
-        {%- assign unique_id = 'option-' | append: option.position | append: '-' | append: forloop.index -%}
-
         <input
           type="radio"
           id="{{ unique_id }}"
