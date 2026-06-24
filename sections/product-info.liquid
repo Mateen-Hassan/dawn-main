@@ -29,13 +29,17 @@
           value="{{ product.selected_or_first_available_variant.id }}"
         >
         <label>{{ value }}</label>
-       
       {%- endfor -%}
       
     </fieldset>
   {%- endfor -%}
 {%- endunless -%} 
-
+<input
+          type="hidden"
+          id="id"
+          name="{{ option.name }}"
+          value="{{ product.selected_or_first_available_variant.id }}"
+        >
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
   <button type="submit" name="add" class="atcBtn">Add to Cart</button>
