@@ -17,15 +17,13 @@
         {{product.title }}
     {{ product.price | money_with_currency }}
     <form method="post" action="/cart/add">
-        {% comment %} Custom Variant Selector Structure {% endcomment %}
-{% unless product.has_only_default_variant %}
-  <div class="custom-variant-selector" data-section="{{ section.id }}">
+ 
     
     {%- for option in product.options_with_values -%}
       <fieldset class="variant-wrapper" data-option-index="{{ forloop.index0 }}">
         <legend class="variant-label">{{ option.name }}: <span class="selected-value">{{ option.selected_value }}</span></legend>
         
-        <div class="variant-options">
+     
           {%- for value in option.values -%}
             <input 
               type="radio" 
@@ -39,11 +37,8 @@
               {{ value }}
             </label>
           {%- endfor -%}
-        </div>
       </fieldset>
     {%- endfor -%}
-
-    {% comment %} Hidden master select that Shopify uses to process the actual cart submission {% endcomment %}
     <select name="id" id="ProductSelect-{{ section.id }}" class="master-select" style="display:none;">
       {% for variant in product.variants %}
         <option 
@@ -56,10 +51,6 @@
         </option>
       {% endfor %}
     </select>
-
-  </div>
-{% endunless %}
-
   <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
   <label for="quantity">Quantity:</label>
   <input type="number" id="quantity" name="quantity" value="1" min="1" />
