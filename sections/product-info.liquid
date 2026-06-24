@@ -17,10 +17,15 @@
         {{product.title }}
     {{ product.price | money_with_currency }}
     <form method="post" action="/cart/add">
+ 
+    
+
     <select name="id" id="ProductSelect-{{ section.id }}" class="master-select" style="display:none;">
       {% for variant in product.variants %}
         <option 
           value="{{ variant.id }}"
+          {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+          {% unless variant.available %}disabled="disabled"{% endunless %}
           data-options='{{ variant.options | json }}'
         >
           {{ variant.title }}
