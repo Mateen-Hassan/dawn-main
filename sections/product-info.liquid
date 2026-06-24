@@ -1,60 +1,61 @@
 {% style %}
-  .container{
-    display: flex;
+    .container{
+      display: flex;
+    }
+  .product-data{
+      display: flex;
+      flex-direction: column;
   }
-.product-data{
-    display: flex;
-    flex-direction: column;
-}
 {% endstyle %}
 
 <div class="container">
-    <img src="{{ product.featured_image | image_url: width: 600 }}" 
-     alt="{{ product.featured_image.alt | escape }}" 
-     width="600" 
-     height="auto">
-     <div class="product-data">
-        {{product.title }}
+  <img
+    src="{{ product.featured_image | image_url: width: 600 }}"
+    alt="{{ product.featured_image.alt | escape }}"
+    width="600"
+    height="auto"
+  >
+  <div class="product-data">
+    {{ product.title }}
     {{ product.price | money_with_currency }}
-    <form method="post" action="/cart/add">
-   {%- unless product.has_only_default_variant -%}
-  {%- for option in product.options_with_values -%}
-    <fieldset>
-      <p>{{ option.name }}</p>
-      {%- for value in option.values -%}
-        <input
-          type="radio"
-          id="{{ option.name }}"
-          name="{{ option.name }}"
-          value="{{ product.selected_or_first_available_variant.id }}"
-        >
-        <label>{{ value }}</label>
-      {%- endfor -%}
-      
-    </fieldset>
-  {%- endfor -%}
-{%- endunless -%} 
-<input
-          type="hidden"
-          id="id"
-          name="{{ option.name }}"
-          value="{{ product.selected_or_first_available_variant.id }}"
-        >
-  <label for="quantity">Quantity:</label>
-  <input type="number" id="quantity" name="quantity" value="1" min="1" />
-  <button type="submit" name="add" class="atcBtn">Add to Cart</button>
-</form>
+  {% form 'product', product %}
+  <!-- form content -->
 
-     </div>
-    
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <fieldset>
+            <p>{{ option.name }}</p>
+            {%- for value in option.values -%}
+              <input
+                type="radio"
+                id="{{ option.name }}"
+                name="{{ option.name }}"
+                value="{{ product.selected_or_first_available_variant.id }}"
+              >
+              <label>{{ value }}</label>
+            {%- endfor -%}
+          </fieldset>
+        {%- endfor -%}
+      {%- endunless -%}
+      <input
+        type="hidden"
+        id="id"
+        name="{{ option.name }}"
+        value="{{ product.selected_or_first_available_variant.id }}"
+      >
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity" value="1" min="1">
+      <button type="submit" name="add" class="atcBtn">Add to Cart</button>
+      
+  {% endform %}
+  </div>
 </div>
 
 <script>
-{% comment %} const atcButton=document.querySelector('.atcBtn')
-    atcButton.addEventListener('click', (event) => {
-  event.preventDefault(); 
-}); {% endcomment %}
-
+  {% comment %} const atcButton=document.querySelector('.atcBtn')
+      atcButton.addEventListener('click', (event) => {
+    event.preventDefault();
+  }); {% endcomment %}
 </script>
 {% schema %}
 {
@@ -75,9 +76,7 @@
   "presets": [
     {
       "name": "Product Data",
-      "settings": {
-        
-      }
+      "settings": {}
     }
   ]
 }
