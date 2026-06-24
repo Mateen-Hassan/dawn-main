@@ -19,8 +19,6 @@
     {{ product.title }}
     {{ product.price | money_with_currency }}
   {% form 'product', product %}
-  
-  <!-- 2. Standard Product Dropdowns (Variants) -->
   {% unless product.has_only_default_variant %}
     {% for option in product.options_with_values %}
       <div class="product-form__input">
@@ -38,7 +36,7 @@
   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
 
-    <button type="submit" name="add" class="product-form__submit button">
+    <button type="submit" name="add" class="atcBtn">
       Add to cart
     </button>
 
