@@ -17,33 +17,10 @@
         {{product.title }}
     {{ product.price | money_with_currency }}
     <form method="post" action="/cart/add">
- 
-    
-    {%- for option in product.options_with_values -%}
-      
-       
-     
-          {%- for value in option.values -%}
-            <input 
-              type="radio" 
-              id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" 
-              name="{{ option.name }}" 
-              value="{{ value | escape }}"
-              {% if option.selected_value == value %}checked{% endif %}
-              class="variant-input-hidden"
-            >
-            <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" class="variant-pill">
-              {{ value }}
-            </label>
-          {%- endfor -%}
-    {%- endfor -%}
     <select name="id" id="ProductSelect-{{ section.id }}" class="master-select" style="display:none;">
       {% for variant in product.variants %}
         <option 
           value="{{ variant.id }}"
-          {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-          {% unless variant.available %}disabled="disabled"{% endunless %}
-          data-options='{{ variant.options | json }}'
         >
           {{ variant.title }}
         </option>
