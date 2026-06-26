@@ -26,7 +26,7 @@
         {% when 'price' %}
           {{ product.price | money_with_currency }}
         {% when 'add_to_cart' %}
-          {% form product
+          {% form 'product'
             , product %}
             <input
               type="hidden"
@@ -58,17 +58,15 @@
     "name": "Product Data",
     "settings": [],
     "blocks": [
-      { 
+      {
         "type": "title",
         "name": "Product Title",
         "settings": []
-      },
-      { 
+      }, {
         "type": "price",
         "name": "Product Price",
         "settings": []
-      },
-      { 
+      }, {
         "type": "add_to_cart",
         "name": "Add To Cart",
         "settings": []
@@ -78,12 +76,15 @@
       {
         "name": "Product Data",
         "blocks": [
-          { "type": "title" },
-          { "type": "price" },
-          { "type": "add_to_cart" }
+          {
+            "type": "title"
+          }, {
+            "type": "price"
+          }, {
+            "type": "add_to_cart"
+          }
         ]
       }
     ]
   }
-  {% endschema %}
-  
+{% endschema %}
