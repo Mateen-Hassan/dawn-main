@@ -133,6 +133,25 @@
     },
     "product_info_aeB8Gh": {
       "type": "product-info",
+      "blocks": {
+        "title_LKXedD": {
+          "type": "title",
+          "settings": {}
+        },
+        "price_qAyB9c": {
+          "type": "price",
+          "settings": {}
+        },
+        "add_to_cart_GcGHM7": {
+          "type": "add_to_cart",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title_LKXedD",
+        "price_qAyB9c",
+        "add_to_cart_GcGHM7"
+      ],
       "name": "Product Data",
       "settings": {}
     },
