@@ -134,10 +134,6 @@
     "product_info_aeB8Gh": {
       "type": "product-info",
       "blocks": {
-        "variants_4qMFBf": {
-          "type": "variants",
-          "settings": {}
-        },
         "title_LKXedD": {
           "type": "title",
           "settings": {}
@@ -146,15 +142,19 @@
           "type": "price",
           "settings": {}
         },
+        "variants_4qMFBf": {
+          "type": "variants",
+          "settings": {}
+        },
         "add_to_cart_GcGHM7": {
           "type": "add_to_cart",
           "settings": {}
         }
       },
       "block_order": [
-        "variants_4qMFBf",
         "title_LKXedD",
         "price_qAyB9c",
+        "variants_4qMFBf",
         "add_to_cart_GcGHM7"
       ],
       "name": "Product Data",
