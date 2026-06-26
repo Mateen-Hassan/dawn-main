@@ -134,6 +134,10 @@
     "product_info_aeB8Gh": {
       "type": "product-info",
       "blocks": {
+        "variants_4qMFBf": {
+          "type": "variants",
+          "settings": {}
+        },
         "title_LKXedD": {
           "type": "title",
           "settings": {}
@@ -148,6 +152,7 @@
         }
       },
       "block_order": [
+        "variants_4qMFBf",
         "title_LKXedD",
         "price_qAyB9c",
         "add_to_cart_GcGHM7"
