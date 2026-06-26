@@ -10,7 +10,7 @@
     gap: 1rem;
   }
 {% endstyle %}
-
+<script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
 <div class="container">
   <img
     src="{{ product.featured_image | image_url: width: 600 }}"
@@ -24,14 +24,14 @@
         {% when 'title' %}
           <h1>{{ product.title }}</h1>
         {% when 'price' %}
-          {{ product.price | money_with_currency }}
+          {{ product.selected_or_first_available_variant.price }}
+
         {% when 'add_to_cart' %}
           {% form 'product'
+ 
             , product %}
-            <input
-              type="hidden"
-              name="id"
-              value="{{product.selected_or_first_available_variant.id}}">
+
+
             <input
               type="hidden"
               name="quantity"
@@ -48,6 +48,10 @@
               {% endif %}
             </button>
           {% endform %}
+        {% when 'variants' %}
+          {% unless product.has_only_default_variant %}
+            <variant-picker data-section-id="{{section.id}}"></variant-picker>
+          {% endunless %}
       {% endcase %}
     {% endfor %}
   </div>
@@ -69,6 +73,10 @@
       }, {
         "type": "add_to_cart",
         "name": "Add To Cart",
+        "settings": []
+      }, {
+        "type": "variants",
+        "name": "Variant picker",
         "settings": []
       }
     ],
