@@ -56,16 +56,34 @@
 {% schema %}
   {
     "name": "Product Data",
-    "blocks": [
-  { "type": "title" },
-  { "type": "price" },
-  { "type": "add_to_cart" }
-],
     "settings": [],
+    "blocks": [
+      { 
+        "type": "title",
+        "name": "Product Title",
+        "settings": []
+      },
+      { 
+        "type": "price",
+        "name": "Product Price",
+        "settings": []
+      },
+      { 
+        "type": "add_to_cart",
+        "name": "Add To Cart",
+        "settings": []
+      }
+    ],
     "presets": [
       {
-        "name": "Product Data"
+        "name": "Product Data",
+        "blocks": [
+          { "type": "title" },
+          { "type": "price" },
+          { "type": "add_to_cart" }
+        ]
       }
     ]
   }
-{% endschema %}
+  {% endschema %}
+  
