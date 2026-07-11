@@ -1,13 +1,15 @@
 <style>
   .container {
-    background-image: url('{{section.settings.desktop_image | image_url: 2000 }}');
+    background-image: url('{{section.settings.desktop_image | image_url:width: 2000 }}');
     background-size: cover;
     background-position: center;
+    min-height: 600px;
+
 
   }
   @media screen and (max-width: 726px) {
     .container {
-      backgroun-color: black;
+      background-image: url('{{ section.settings.mobile_image | image_url: width: 1000 }}');
 
     }
   }
