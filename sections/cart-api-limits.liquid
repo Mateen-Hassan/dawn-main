@@ -12,7 +12,7 @@
     }
   }
 </style>
-<section>
+<section id="{{section.id}}">
   <div class="container">
     {% for block in section.blocks %}
 
@@ -20,7 +20,8 @@
       {% case block.type %}
         {% when 'title' %}
           <h3>{{ block.settings.title-text }}</h3>
-
+        {% when 'button' %}
+          <button class="">{{ block.settings.button-text }}</button>
       {% endcase %}
     {% endfor %}
 
@@ -53,6 +54,17 @@
 
           }
         ]
+      }, {
+        "type": "button",
+        "name": "Section button",
+        "settings": [
+          {
+            "type": "text",
+            "id": "button-text",
+            "label": "Button text"
+
+          }
+        ]
       }
 
     ],
@@ -62,6 +74,8 @@
         "blocks": [
           {
             "type": "title"
+          }, {
+            "type": "button"
           }
         ]
       }
