@@ -1,7 +1,7 @@
 {% comment %} 
-                                                                  Renders cart drawer 
-                                                                  Usage: 
-                                                                  {% render 'cart-drawer' %}
+                                                                                Renders cart drawer 
+                                                                                Usage: 
+                                                                                {% render 'cart-drawer' %}
 {% endcomment %}
 
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
@@ -33,6 +33,7 @@
   .drawer {
     visibility: hidden;
   }
+
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
@@ -608,5 +609,3 @@
     </div>
   </div>
 </cart-drawer>
-
-

@@ -1,0 +1,70 @@
+<style>
+  .container {
+    background-image: url('{{section.settings.desktop_image | image_url: 2000 }}');
+    background-size: cover;
+    background-position: center;
+
+  }
+  @media screen and (max-width: 726px) {
+    .container {
+      backgroun-color: black;
+
+    }
+  }
+</style>
+<section>
+  <div class="container">
+    {% for block in section.blocks %}
+
+
+      {% case block.type %}
+        {% when 'title' %}
+          <h3>{{ block.settings.title-text }}</h3>
+
+      {% endcase %}
+    {% endfor %}
+
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Cart data console",
+    "settings": [
+      {
+        "type": "image_picker",
+        "label": "Desktop Image",
+        "id": "desktop_image"
+      }, {
+        "type": "image_picker",
+        "label": "Mobile Image",
+        "id": "mobile_image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "title",
+        "name": "Section Title",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title-text",
+            "label": "Add title"
+
+          }
+        ]
+      }
+
+    ],
+    "presets": [
+      {
+        "name": "Cart console",
+        "blocks": [
+          {
+            "type": "title"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
