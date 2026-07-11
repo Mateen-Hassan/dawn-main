@@ -4,7 +4,9 @@
     background-size: cover;
     background-position: center;
     min-height: 600px;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
   }
   @media screen and (max-width: 726px) {
@@ -16,20 +18,53 @@
 </style>
 <section id="{{section.id}}">
   <div class="container">
-    {% for block in section.blocks %}
+    <div class="content">
+      {% for block in section.blocks %}
 
 
-      {% case block.type %}
-        {% when 'title' %}
-          <h3>{{ block.settings.title-text }}</h3>
-        {% when 'button' %}
-          <button class="">{{ block.settings.button-text }}</button>
-      {% endcase %}
-    {% endfor %}
-
+        {% case block.type %}
+          {% when 'title' %}
+            <h3>{{ block.settings.title-text }}</h3>
+          {% when 'button' %}
+            <button class="button" id="button">{{ block.settings.button-text }}</button>
+        {% endcase %}
+      {% endfor %}
+    </div>
   </div>
 </section>
 
+<script>
+  const button = document.querySelector('#button');
+  const variant_id={{section.settings.product.selected_or_first_available_variant.id | json}}
+  const qty= {{section.settings.quantity}}
+  if (button) {
+    console.log('triggered')
+    button.addEventListener('click', () => {
+      alert('this is pressed');
+       let formData={
+  'items':[{
+    'id':variant_id,
+    'quantity': qty
+    
+  }]
+       }
+  fetch(window.Shopify.routes.root+'cart/add.js',{
+    method: 'POST',
+  headers:{
+    'Content-type':'application/Json'
+  },
+  body:JSON.stringify(formData)
+  })
+  .then(response=>{
+    return response.json();
+  })
+  .catch((error)=>{
+    console.error('Error:', error)
+  })
+  //
+    });
+  }
+</script>
 {% schema %}
   {
     "name": "Cart data console",
@@ -42,6 +77,14 @@
         "type": "image_picker",
         "label": "Mobile Image",
         "id": "mobile_image"
+      }, {
+        "type": "product",
+        "label": "select a product",
+        "id": "product"
+      }, {
+        "type": "number",
+        "id": "quantity",
+        "label": "add qty to add"
       }
     ],
     "blocks": [
@@ -63,7 +106,8 @@
           {
             "type": "text",
             "id": "button-text",
-            "label": "Button text"
+            "label": "Button text",
+            "default": "click"
 
           }
         ]
