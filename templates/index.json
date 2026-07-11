@@ -59,22 +59,22 @@
     "cart_api_limits_69ek9d": {
       "type": "cart-api-limits",
       "blocks": {
-        "button_paJaXn": {
-          "type": "button",
-          "settings": {
-            "button-text": "Click here to show"
-          }
-        },
         "title_aidGJi": {
           "type": "title",
           "settings": {
             "title-text": "This is cart console"
           }
+        },
+        "button_paJaXn": {
+          "type": "button",
+          "settings": {
+            "button-text": "Click here to show cart data"
+          }
         }
       },
       "block_order": [
-        "button_paJaXn",
-        "title_aidGJi"
+        "title_aidGJi",
+        "button_paJaXn"
       ],
       "name": "Cart console",
       "settings": {
