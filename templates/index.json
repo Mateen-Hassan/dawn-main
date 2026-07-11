@@ -70,7 +70,9 @@
         "title_aidGJi"
       ],
       "name": "Cart console",
-      "settings": {}
+      "settings": {
+        "desktop_image": "shopify://shop_images/theme_cover_image.jpg"
+      }
     },
     "rich_text": {
       "type": "rich-text",
