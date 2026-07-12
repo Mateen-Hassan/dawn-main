@@ -80,7 +80,8 @@
       "settings": {
         "desktop_image": "shopify://shop_images/theme_cover_image.jpg",
         "product": "kumpoo-badminton-racket-power-control-smash-82g-strung-white-black",
-        "quantity": 2
+        "quantity": 2,
+        "faq": "how-long-is-shipping-1"
       }
     },
     "rich_text": {
