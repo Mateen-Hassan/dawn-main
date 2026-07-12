@@ -7,128 +7,345 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
   }
+  
   @media screen and (max-width: 726px) {
     .container {
       background-image: url('{{ section.settings.mobile_image | image_url: width: 1000 }}');
-
     }
   }
+  .content-data{
+    display: none;
+  }
+  accordion-tab[open] .content-data{
+    display:block;
+  }
+  
 </style>
+<script src="{{'close.js' |asset_url}}" defer="defer" ></script>
+
+
 <section id="{{section.id}}">
   <div class="container">
     <div class="content">
       {% for block in section.blocks %}
-
-
         {% case block.type %}
           {% when 'title' %}
             <h3>{{ block.settings.title-text }}</h3>
           {% when 'button' %}
-            <button class="button" id="button">{{ block.settings.button-text }}</button>
+            <button class="button" id="add-to-cart-btn">{{ block.settings.button-text }}</button>
         {% endcase %}
       {% endfor %}
+      <button id="clear-cart-btn">Clear Cart</button>
+      {%  assign metaobject = section.settings.faq %}
+      <accordion-tab>
+        <h1 data-header>{{metaobject.question}}</h1>
+<div class="content-data">
+        <p data-content>{{metaobject.question}}</p>
+        </div>
+    </accordion-tab>
     </div>
+    
   </div>
+  
 </section>
 
 <script>
-  const button = document.querySelector('#button');
-  const variant_id={{section.settings.product.selected_or_first_available_variant.id | json}}
-  const qty= {{section.settings.quantity}}
-  if (button) {
-    console.log('triggered')
-    button.addEventListener('click', () => {
-      alert('this is pressed');
-       let formData={
-  'items':[{
-    'id':variant_id,
-    'quantity': qty
+  document.addEventListener('DOMContentLoaded', function() {
     
-  }]
-       }
-  fetch(window.Shopify.routes.root+'cart/add.js',{
-    method: 'POST',
-  headers:{
-    'Content-type':'application/Json'
-  },
-  body:JSON.stringify(formData)
-  })
-  .then(response=>{
-    return response.json();
-  })
-  .catch((error)=>{
-    console.error('Error:', error)
-  })
-  //
-    });
-  }
+    // ====== DOM Elements ======
+    const addToCartBtn = document.querySelector('#add-to-cart-btn');
+    const clearCartBtn = document.querySelector('#clear-cart-btn');
+    const cartDrawer = document.querySelector('#cart-drawer');
+    const cartDrawerInner = document.querySelector('#cart-drawer-inner');
+    const overlay = document.querySelector('.drawer-overlay');
+    
+    // ====== Shopify Variables ======
+    const variant_id = {{ section.settings.product.selected_or_first_available_variant.id | json }};
+    const qty = {{ section.settings.quantity }};
+    
+    // ====== Add to Cart Function ======
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // بٹن کو ڈس ایبل کریں
+        const originalText = this.textContent;
+        this.disabled = true;
+        this.textContent = 'Adding...';
+        
+        let formData = {
+          'items': [{
+            'id': variant_id,
+            'quantity': qty
+          }]
+        };
+        
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('✅ Item added to cart:', data);
+          
+          // کارٹ ڈراور کا نیا HTML لائیں
+          return fetch('/?section_id=cart-drawer');
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch cart drawer');
+          }
+          return response.text();
+        })
+        .then(html => {
+          console.log('✅ Cart drawer HTML received');
+          
+          // کارٹ ڈراور کو رینڈر کریں
+          renderCartDrawer(html);
+          
+          // کارٹ ڈراور کو کھولیں
+          openCartDrawer();
+          
+          // کارٹ کاؤنٹ اپڈیٹ کریں
+          updateCartCount();
+        })
+        .catch(error => {
+          console.error('❌ Error:', error);
+          showErrorMessage('کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔');
+        })
+        .finally(() => {
+          // بٹن کو دوبارہ فعال کریں
+          this.disabled = false;
+          this.textContent = originalText;
+        });
+      });
+    }
+    
+    // ====== Render Cart Drawer Function ======
+    function renderCartDrawer(html) {
+      // عارضی ڈیوائن بنائیں
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      
+      // نیا کارٹ ڈراور کا اندرونی حصہ نکالیں
+      const newCartContent = tempDiv.querySelector('.drawer__inner');
+      
+      if (newCartContent && cartDrawerInner) {
+        // صرف اندرونی حصہ اپڈیٹ کریں
+        cartDrawerInner.innerHTML = newCartContent.innerHTML;
+        console.log('✅ Cart drawer inner content updated');
+      } else if (cartDrawer) {
+        // پورا ڈراور اپڈیٹ کریں
+        // صرف اندرونی حصہ نکالیں
+        const innerContent = tempDiv.querySelector('.drawer__inner');
+        if (innerContent) {
+          cartDrawer.innerHTML = innerContent.innerHTML;
+        }
+        console.log('✅ Full cart drawer updated');
+      } else {
+        console.warn('⚠️ Cart drawer container not found');
+      }
+    }
+    
+    // ====== Open Cart Drawer ======
+    function openCartDrawer() {
+      if (cartDrawer) {
+        cartDrawer.classList.add('open');
+      }
+      if (overlay) {
+        overlay.classList.add('active');
+      }
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // ====== Close Cart Drawer (Global) ======
+    window.closeCartDrawer = function() {
+      if (cartDrawer) {
+        cartDrawer.classList.remove('open');
+      }
+      if (overlay) {
+        overlay.classList.remove('active');
+      }
+      document.body.style.overflow = '';
+    };
+    
+    // ====== Update Cart Count ======
+    function updateCartCount() {
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          const cartCounts = document.querySelectorAll('.cart-count, .cart-item-count');
+          cartCounts.forEach(el => {
+            el.textContent = cart.item_count;
+          });
+          console.log('✅ Cart count updated:', cart.item_count);
+        })
+        .catch(err => console.error('Failed to update cart count:', err));
+    }
+    
+    // ====== Show Error Message ======
+    function showErrorMessage(message) {
+      // اپنی مرضی کا ایرر میسج
+      const errorDiv = document.querySelector('.error-message');
+      if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+          errorDiv.style.display = 'none';
+        }, 3000);
+      } else {
+        alert(message);
+      }
+    }
+    
+    // ====== Clear Cart Function ======
+    if (clearCartBtn) {
+      clearCartBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (!confirm('Are you sure you want to clear your cart?')) {
+          return;
+        }
+        
+        this.disabled = true;
+        this.textContent = 'Clearing...';
+        
+        fetch(window.Shopify.routes.root + 'cart/clear.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to clear cart');
+          }
+          return response.json();
+        })
+        .then(cart => {
+          console.log('✅ Cart cleared:', cart);
+          
+          // کارٹ ڈراور کو اپڈیٹ کریں
+          return fetch('/?section_id=cart-drawer');
+        })
+        .then(response => response.text())
+        .then(html => {
+          renderCartDrawer(html);
+          updateCartCount();
+          showSuccessMessage('Cart cleared successfully!');
+        })
+        .catch(error => {
+          console.error('❌ Clear cart error:', error);
+          showErrorMessage('Failed to clear cart. Please try again.');
+        })
+        .finally(() => {
+          this.disabled = false;
+          this.textContent = 'Clear Cart';
+        });
+      });
+    }
+    
+    // ====== Show Success Message ======
+    function showSuccessMessage(message) {
+      const successDiv = document.querySelector('.success-message');
+      if (successDiv) {
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+        setTimeout(() => {
+          successDiv.style.display = 'none';
+        }, 3000);
+      } else {
+        console.log('✅', message);
+      }
+    }
+    
+    // ====== Initial Cart Count ======
+    updateCartCount();
+    
+    console.log('✅ Cart script initialized successfully');
+  });
 </script>
+
 {% schema %}
-  {
-    "name": "Cart data console",
-    "settings": [
-      {
-        "type": "image_picker",
-        "label": "Desktop Image",
-        "id": "desktop_image"
-      }, {
-        "type": "image_picker",
-        "label": "Mobile Image",
-        "id": "mobile_image"
-      }, {
-        "type": "product",
-        "label": "select a product",
-        "id": "product"
-      }, 
-      {
-        "type": "range",
-        "min": 1,
-        "max": 6,
-        "default": 1,
-        "id": "quantity",
-        "label": "add qty to add"
-      }
-    ],
-    "blocks": [
-      {
-        "type": "title",
-        "name": "Section Title",
-        "settings": [
-          {
-            "type": "text",
-            "id": "title-text",
-            "label": "Add title"
+{
+  "name": "Cart data console",
+  "settings": [
+    {
+      "type": "image_picker",
+      "label": "Desktop Image",
+      "id": "desktop_image"
+    },
+    {
+      "type": "image_picker",
+      "label": "Mobile Image",
+      "id": "mobile_image"
+    },
+    {
+      "type": "product",
+      "label": "Select a product",
+      "id": "product"
+    },
+    {
+      "type": "range",
+      "min": 1,
+      "max": 6,
+      "default": 1,
+      "id": "quantity",
+      "label": "Add quantity to add"
+    },{
+      "type": "metaobject",
+      "id": "faq",
+      "label": "Select FAQ",
+      "metaobject_type": "FAQs"
 
-          }
-        ]
-      }, {
-        "type": "button",
-        "name": "Section button",
-        "settings": [
-          {
-            "type": "text",
-            "id": "button-text",
-            "label": "Button text",
-            "default": "click"
-
-          }
-        ]
-      }
-
-    ],
-    "presets": [
-      {
-        "name": "Cart console",
-        "blocks": [
-          {
-            "type": "title"
-          }, {
-            "type": "button"
-          }
-        ]
-      }
-    ]
-  }
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Section Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title-text",
+          "label": "Add title"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Section button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button-text",
+          "label": "Button text",
+          "default": "Add to Cart"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart console",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}
