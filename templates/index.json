@@ -61,6 +61,7 @@
       "type": "test-section",
       "name": "Gift Guide Layout",
       "settings": {
+        "bg_image": "shopify://shop_images/Screenshot_2023-03-06_at_19.03.00.png",
         "bg_color": "#ffffff",
         "brand_text": "TISSO VISON",
         "pre_heading": "Find the ideal gift for your loved ones.",
