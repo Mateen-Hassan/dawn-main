@@ -1,13 +1,68 @@
+<style>
+  /* 1. Global Max Width & Centering */
+  .gift-guide-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
 
- /* Base Layout & Fonts */
+  /* 2. Section Base */
   .gift-guide-section {
+    position: relative;
     padding: 20px 40px 10px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     box-sizing: border-box;
-    max-width: 1400px;
-    margin: 0 auto;
+    overflow: hidden; /* Keeps decorative boxes inside */
+    min-height: 600px;
   }
   .gift-guide-section * { box-sizing: border-box; }
+
+  /* 3. Background Handling */
+  .gg-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Blend mode helps the CSS grid fallback look okay if image is missing */
+    background-blend-mode: overlay; 
+  }
+
+  /* 4. CSS Fallback Grid (Line-art mimic) */
+  .gg-css-grid-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    opacity: 0.5; /* Subtle if no image */
+    pointer-events: none;
+  }
+  .gg-css-grid-bg .box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.2);
+    box-shadow: inset 0 0 0 1px #eee;
+  }
+  /* Hide fallback if bg image exists */
+  .gift-guide-section .gg-background:not([style*="background-image: url"]) .gg-css-grid-bg {
+    display: grid; /* Only shows if no bg image */
+  }
+  .gift-guide-section .gg-background[style*="background-image: url"] .gg-css-grid-bg {
+    display: none; /* Hides if user uploaded an image */
+  }
+
+  /* 5. Foreground Content */
+  .gg-content-wrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+  }
 
   /* Top Bar */
   .gg-top-bar {
@@ -17,6 +72,7 @@
     padding-bottom: 30px;
     flex-wrap: wrap;
     gap: 15px;
+    background: transparent;
   }
   .gg-brand { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; flex: 0 0 auto; }
   .gg-top-text { font-size: 0.9rem; text-align: center; flex: 1 1 auto; color: #444; }
@@ -34,46 +90,23 @@
   .gg-top-btn:hover { opacity: 0.8; }
   .arrow { font-size: 1.2rem; line-height: 1; }
 
-  /* Main Grid Structure */
+  /* Main Grid */
   .gg-main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
+    flex-grow: 1;
     padding: 20px 0;
   }
 
-  /* Illustration Grid (The visual aspect) */
-  .gg-illustrations {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    /* This mimics the collage feel */
-  }
-  .illus-item {
-    aspect-ratio: 1 / 1;
-    border: 1px solid #ddd; /* optional soft border for structure */
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background: rgba(0,0,0,0.02);
-  }
-  .illus-item svg {
-    width: 80%;
-    height: 80%;
-    color: #111;
+  /* Spacer for the left side (where the image sits) */
+  .gg-image-spacer {
+    width: 100%;
+    height: 100%;
+    min-height: 400px; /* Ensures layout doesn't collapse on mobile */
   }
 
-  /* Specific sizes for collage feel (optional tweaks) */
-  .i-map { grid-column: span 2; aspect-ratio: 2 / 1; } /* Wide */
-  .i-camera { grid-column: span 1; }
-  .i-notebook { grid-column: span 1; grid-row: span 2; aspect-ratio: 1 / 1.5; } /* Tall */
-  .i-compass { align-self: end; }
-  .i-watch { grid-column: span 2; aspect-ratio: 2 / 1; }
-  .i-bow { grid-column: span 1; }
-  
   /* Content Area */
   .gg-content {
     padding-left: 20px;
@@ -87,6 +120,7 @@
     margin: 0 0 20px 0;
     line-height: 1.1;
     letter-spacing: -1px;
+    color: inherit;
   }
   .gg-desc {
     font-size: 1.1rem;
@@ -124,9 +158,9 @@
     color: #555;
   }
 
-  /* Responsive */
+  /* 6. Responsive */
   @media screen and (max-width: 1024px) {
-    .gg-top-text { display: none; } /* Hide top text on medium screens */
+    .gg-top-text { display: none; }
     .gg-main-grid { gap: 30px; }
   }
 
@@ -137,29 +171,28 @@
     .gg-top-btn { justify-content: center; width: 100%; margin-top: 5px; }
     
     .gg-main-grid {
-      grid-template-columns: 1fr; /* Stack vertically on mobile */
-      gap: 30px;
+      grid-template-columns: 1fr; /* Stack vertically */
+      gap: 20px;
     }
     
+    .gg-image-spacer {
+      min-height: 250px; /* Collapses smaller on mobile for the background image */
+      order: -1; /* Puts image background spacer ABOVE text on mobile */
+      background-position: center top;
+    }
+
     .gg-content { padding-left: 0; text-align: center; align-items: center; }
     .gg-desc { max-width: 100%; }
     .gg-main-btn { width: 100%; justify-content: center; }
-
-    /* Mobile Illustrations */
-    .gg-illustrations {
-      /* On mobile, maybe go 2 columns to fit better */
-      grid-template-columns: repeat(2, 1fr); 
-    }
-    /* Reset weird spans on mobile so they stack nicely in 2 cols */
-    .i-map { grid-column: span 2; aspect-ratio: 2 / 1; }
-    .i-notebook { grid-column: span 1; grid-row: auto; aspect-ratio: 1 / 1; } 
-    .i-watch { grid-column: span 2; aspect-ratio: 2 / 1; }
     
     .gg-footer { font-size: 0.65rem; }
+    
+    /* Hide the CSS fallback grid on mobile */
+    .gg-css-grid-bg { display: none !important; }
   }
 
   @media screen and (max-width: 480px) {
     .gg-heading { font-size: 2.2rem; }
-    .gg-illustrations { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .illus-item { padding: 5px; }
+    .gg-image-spacer { min-height: 150px; }
   }
+</style>
