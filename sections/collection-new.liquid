@@ -1,0 +1,8 @@
+{{collection.title }}
+{% for product in collection.products %}
+
+{{ product.title }}
+{{ product.price | money }}
+{{ product.featured_image | image_url:width: 600}}
+{{ product.url }}
+    {% endfor %}
